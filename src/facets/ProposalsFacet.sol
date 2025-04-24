@@ -3,8 +3,7 @@ pragma solidity ^0.8.28;
 
 import { LibProposal } from "src/libraries/LibProposal.sol";
 
-contract ProposalsFacet { 
-
+contract ProposalsFacet {
     function createProposal(
         string memory description,
         uint256 startBlock,
@@ -14,6 +13,14 @@ contract ProposalsFacet {
         bytes[] calldata calldatas,
         uint256 chainId
     ) external {
-        LibProposal.createProposal(description, startBlock, duration, targets, values, calldatas, chainId);
+        LibProposal.createProposal(
+            description,
+            startBlock,
+            duration,
+            targets,
+            values,
+            calldatas,
+            chainId
+        );
     }
 }

@@ -7,9 +7,14 @@ import { ERC20Permit } from
 import { ERC20Votes } from
     "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";
 import { Nonces } from "@openzeppelin/contracts/utils/Nonces.sol";
+import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 
-contract DAOToken is ERC20, ERC20Permit, ERC20Votes {
-    constructor() ERC20("DAOToken", "DAO") ERC20Permit("DAOToken") { }
+contract DAOToken is ERC20, ERC20Permit, ERC20Votes, Ownable {
+    constructor(address initialOwner)
+        ERC20("DAOToken", "DAO")
+        ERC20Permit("DAOToken")
+        Ownable(initialOwner)
+    { }
 
     function clock() public view override returns (uint48) {
         return uint48(block.timestamp);

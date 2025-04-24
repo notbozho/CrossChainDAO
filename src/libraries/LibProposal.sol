@@ -38,4 +38,6 @@ library LibProposal {
             chainId: chainId
         });
     }
+
+    function vote(uint256 proposalId, bool positive) internal { }
 }
