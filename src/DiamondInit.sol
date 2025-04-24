@@ -8,8 +8,6 @@ contract DiamondInit {
     function init(address initialOwner) external {
         AppStorage storage s = LibAppStorage.appStorage();
 
-        DAOToken daoToken = new DAOToken(initialOwner);
-
-        s.daoToken = address(daoToken);
+        s.daoToken = new DAOToken(initialOwner);
     }
 }

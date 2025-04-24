@@ -10,7 +10,7 @@ contract DiamondTest is Deployer, TestUtils {
         deploy();
     }
 
-    function test_previewOwnerFacet() public { 
+    function test_previewOwnerFacet() public {
         console.log("owner is", _ownershipFacet.owner());
     }
 }

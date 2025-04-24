@@ -1,10 +1,16 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
+import { ERC20Votes } from
+    "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";
+
 struct AppStorage {
-    address daoToken; // address of the governance token used for voting
-    mapping(uint256 => Proposal) proposals;
-    uint256 totalProposals;
+    ERC20Votes daoToken; // address of the governance token used for voting
+    mapping(uint256 => Proposal) proposals; // proposalId => proposal struct
+    mapping(uint256 proposalId => mapping(address user => Receipt receipt))
+        receipts;
+    uint256 totalProposals; // the total number of proposals submitted
+    uint256 currentQuorumBps;
 }
 
 enum ProposalState {
@@ -13,7 +19,9 @@ enum ProposalState {
     Defeated,
     Succeeded,
     Executed,
-    Cancelled
+    Canceled,
+    Queued,
+    Expired
 }
 
 struct Proposal {
@@ -21,14 +29,22 @@ struct Proposal {
     string description;
     uint256 startBlock;
     uint256 endBlock;
+    uint256 submitBlock;
     uint256 forVotes;
     uint256 againstVotes;
+    uint256 quorumBps; // minimum FOR votes in order for the proposal to be successful
     bool executed;
     bool canceled;
     address[] targets;
     uint256[] values;
     bytes[] calldatas;
-    uint256 chainId;
+    uint256 chainId; // can be lowered to uint32
+}
+
+struct Receipt {
+    bool voted;
+    bool positive;
+    uint256 votes; // can be lowered to save 1 storage slot
 }
 
 library LibAppStorage {

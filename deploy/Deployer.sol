@@ -12,7 +12,7 @@ import { DiamondInit } from "src/DiamondInit.sol";
 import { DiamondCutFacet } from "src/facets/DiamondCutFacet.sol";
 import { DiamondLoupeFacet } from "src/facets/DiamondLoupeFacet.sol";
 import { OwnershipFacet } from "src/facets/OwnershipFacet.sol";
-import { ProposalsFacet } from "src/facets/ProposalsFacet.sol";
+import { ProposalFacet } from "src/facets/ProposalFacet.sol";
 
 import { DeployHelper } from "./DeployHelper.sol";
 
@@ -26,7 +26,7 @@ abstract contract Deployer is Test, DeployHelper {
     DiamondLoupeFacet public _diamondLoupe;
 
     OwnershipFacet public _ownershipFacet;
-    ProposalsFacet public _proposalsFacet;
+    ProposalFacet public _proposalFacet;
 
     DiamondInit diamondInit = new DiamondInit();
 
@@ -35,7 +35,7 @@ abstract contract Deployer is Test, DeployHelper {
         _diamondLoupe = new DiamondLoupeFacet();
 
         _ownershipFacet = new OwnershipFacet();
-        _proposalsFacet = new ProposalsFacet();
+        _proposalFacet = new ProposalFacet();
 
         IDiamondCut.FacetCut[] memory cut = new IDiamondCut.FacetCut[](3);
 
@@ -57,12 +57,12 @@ abstract contract Deployer is Test, DeployHelper {
             })
         );
 
-        vm.label(address(_proposalsFacet), "ProposalsFacet");
+        vm.label(address(_proposalFacet), "ProposalFacet");
         cut[2] = (
             IDiamondCut.FacetCut({
-                facetAddress: address(_proposalsFacet),
+                facetAddress: address(_proposalFacet),
                 action: IDiamondCut.FacetCutAction.Add,
-                functionSelectors: generateSelectors("ProposalsFacet")
+                functionSelectors: generateSelectors("ProposalFacet")
             })
         );
 
