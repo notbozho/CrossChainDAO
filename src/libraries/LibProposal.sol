@@ -22,7 +22,7 @@ library LibProposal {
         uint256 duration,
         address[] calldata targets,
         uint256[] calldata values,
-        bytes[] calldata calldatas,
+        bytes[] calldata datas,
         uint256 chainId
     ) internal returns (uint256 proposalId) {
         require(
@@ -30,6 +30,7 @@ library LibProposal {
                 && duration <= Constants.MAX_PROPOSAL_DURATION,
             Errors.InvalidParameter("duration")
         );
+        _validateTransactions(targets, values, datas);
 
         AppStorage storage s = LibAppStorage.appStorage();
 
@@ -50,7 +51,7 @@ library LibProposal {
             canceled: false,
             targets: targets,
             values: values,
-            calldatas: calldatas,
+            datas: datas,
             chainId: chainId
         });
     }
@@ -96,11 +97,12 @@ library LibProposal {
             return ProposalState.Active;
         } else if (isDefeated(s, p)) {
             return ProposalState.Defeated;
-        } else if (block.number > p.endBlock) {
-            return ProposalState.Succeeded;
         } else if (p.executed) {
             return ProposalState.Executed;
             // check for State.Expired
+        } else if (block.number > p.endBlock) {
+            // TODO: fix this
+            return ProposalState.Succeeded;
         } else {
             return ProposalState.Queued;
         }
@@ -126,5 +128,21 @@ library LibProposal {
         uint256 pastTotalSupply = daoToken.getPastTotalSupply(p.submitBlock);
 
         return pastTotalSupply * p.quorumBps / Constants.BPS_DENOMINATOR;
+    }
+
+    function _validateTransactions(
+        address[] calldata targets,
+        uint256[] calldata values,
+        bytes[] calldata datas
+    ) internal pure {
+        require(targets.length != 0, Errors.InvalidParameter("targets"));
+        require(
+            targets.length == values.length && values.length == datas.length,
+            Errors.InvalidParameter("targets, values, datas length mismatch")
+        );
+        require(
+            targets.length <= Constants.MAX_TRANSACTIONS,
+            Errors.InvalidParameter("transactions count > MAX_TRANSACTIONS")
+        );
     }
 }

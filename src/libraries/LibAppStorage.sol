@@ -11,6 +11,7 @@ struct AppStorage {
         receipts;
     uint256 totalProposals; // the total number of proposals submitted
     uint256 currentQuorumBps;
+    mapping(bytes32 txHash => bool queued) queuedTransactions;
 }
 
 enum ProposalState {
@@ -37,8 +38,8 @@ struct Proposal {
     bool canceled;
     address[] targets;
     uint256[] values;
-    bytes[] calldatas;
-    uint256 chainId; // can be lowered to uint32
+    bytes[] datas;
+    uint256 chainId; // can be lowered to uint20
 }
 
 struct Receipt {
