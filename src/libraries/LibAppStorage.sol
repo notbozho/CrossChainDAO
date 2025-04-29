@@ -4,8 +4,13 @@ pragma solidity ^0.8.28;
 import { ERC20Votes } from
     "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";
 
+import { ProposalMessenger } from "src/messaging/ProposalMessenger.sol";
+
 struct AppStorage {
     ERC20Votes daoToken; // address of the governance token used for voting
+
+    ProposalMessenger proposalMessenger;
+
     mapping(uint256 => Proposal) proposals; // proposalId => proposal struct
     mapping(uint256 proposalId => mapping(address user => Receipt receipt))
         receipts;
