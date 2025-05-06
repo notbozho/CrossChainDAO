@@ -17,7 +17,6 @@ import { ProposalFacet } from "src/facets/ProposalFacet.sol";
 import { DeployHelper } from "./DeployHelper.sol";
 
 abstract contract Deployer is Test, DeployHelper {
-
     address deployerAddress = vm.envAddress("PUBLIC_KEY");
 
     IDiamond public diamond;
@@ -66,11 +65,16 @@ abstract contract Deployer is Test, DeployHelper {
             })
         );
 
-
         Diamond d = new Diamond(deployerAddress, address(_diamondCut));
         vm.prank(deployerAddress);
-        IDiamondCut(address(d)).diamondCut(cut, address(diamondInit), abi.encodeWithSelector(DiamondInit.init.selector, deployerAddress));
+        IDiamondCut(address(d)).diamondCut(
+            cut,
+            address(diamondInit),
+            abi.encodeWithSelector(DiamondInit.init.selector, deployerAddress)
+        );
 
         return address(diamond);
     }
+
+    function _deployLz(bool isProd) internal { }
 }

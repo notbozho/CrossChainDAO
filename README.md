@@ -24,11 +24,13 @@ CrossChain DAO is a governance protocol that allows on-chain voting and proposal
 
 ## Usage
 
-In order to run tests, create a `.env` file with your public key:
+In order to run tests, create a `.env` file with:
 
-```
-PUBLIC_KEY=your_public_key # eg.. 0x1234567890abcdef1234567890abcdef12345678
-```
+- public key:
+- deployer private key:
+- rpc urls for Polygon and Base
+- [lz endpoint addresses and ids](https://docs.layerzero.network/v2/deployments/deployed-contracts) for Polygon and Base
+  _You can copy `.env.example`_
 
 ### Build Contracts
 

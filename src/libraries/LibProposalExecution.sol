@@ -25,11 +25,7 @@ library LibProposalExecution {
         // CEI pattern
         p.executed = true;
 
-        if (p.chainId == 1) {
-            _queueTransactions(s, p, proposalId);
-        } else {
-            // TODO: send proposal execution cross chain
-        }
+        _queueTransactions(s, p, proposalId);
 
         emit Events.ProposalExecuted(proposalId, msg.sender);
     }
@@ -113,6 +109,7 @@ library LibProposalExecution {
 
         uint256 length = targets.length;
         for (uint256 i; i < length;) {
+            // TODO: just use the single executeTransaction
             uint256 proposalId = proposalIds[i];
             address target = targets[i];
             uint256 value = values[i];
